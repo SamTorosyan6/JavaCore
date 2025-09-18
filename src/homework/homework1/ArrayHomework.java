@@ -83,7 +83,6 @@ public class ArrayHomework {
         // թե քանի ձայնավոր կա այս մասիվի մեջ, ու տպել քանակը։
 
         char[] chars = {'բ', 'ա', 'ր', 'և', 'ա', 'շ', 'խ', 'ա', 'ր', 'հ'};
-        char[] vowels = {'ա', 'ե', 'է', 'ը', 'ի', 'ո', 'u', 'օ'};
         int countOfVowels = 0;
 
         for (char x : chars) {
