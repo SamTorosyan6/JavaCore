@@ -18,11 +18,7 @@ public class ArrayHomework {
 
             }
         }
-        if (countOfSix == 0) {
-            System.out.println("6-երի քանակը։ " + 0);
-        } else {
             System.out.println("6-երի քանակը։ " + countOfSix);
-        }
 
         System.out.println();
         System.out.println();
@@ -44,8 +40,6 @@ public class ArrayHomework {
 
         for (int num : nums) {
 
-            num = newArray[index];
-            index++;
             System.out.print(num + " ");
 
         }
