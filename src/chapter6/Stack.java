@@ -1,9 +1,8 @@
 package chapter6;
 
 public class Stack {
-
-    int[] stck = new int[10];
-    int tos;
+    private int[] stck = new int[10];
+    private int tos;
 
     Stack() {
 
@@ -28,7 +27,7 @@ public class Stack {
             System.out.println("Stack не загружен");
             return 0;
 
-        }else {
+        } else {
             return stck[tos--];
         }
     }
