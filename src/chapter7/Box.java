@@ -2,11 +2,12 @@ package chapter7;
 
 public class Box {
 
-    double width;
-    double height;
-    double depth;
+    public double width;
+    public double height;
+    public double depth;
 
-    Box(double w, double h, double d) {
+
+    public Box(double w, double h, double d) {
 
         width = w;
         height = h;
@@ -14,7 +15,7 @@ public class Box {
 
     }
 
-    Box() {
+    public Box() {
 
         width = -1;
         height = -1;
@@ -22,7 +23,7 @@ public class Box {
 
     }
 
-    Box(Box ob){
+    public Box(Box ob){
 
         width = ob.width;
         height = ob.height;
@@ -30,13 +31,13 @@ public class Box {
 
     }
 
-    Box(double len) {
+    public Box(double len) {
 
         width = height = depth = len;
 
     }
 
-    double volume() {
+    public double volume() {
 
         return width * height * depth;
 
