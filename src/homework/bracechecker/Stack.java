@@ -31,4 +31,8 @@ public class Stack {
             return stck[size--];
         }
     }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
 }

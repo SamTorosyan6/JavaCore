@@ -14,7 +14,6 @@ public class BraceChecker {
     public void check() {
 
         Boolean endOfFor = false;
-        Boolean stackIsEmpty = false;
 
         for (int i = 0; i < text.length(); i++) {
 
@@ -32,14 +31,13 @@ public class BraceChecker {
                     case '}':
                         char openedAtLast1 = stack.pop();
                         if (openedAtLast1 == 0) {
-                            stackIsEmpty = true;
-                            text = ErrorText('{', c, i, stackIsEmpty);
-                            stackIsEmpty = false;
+                            text = TextErr('{', c, i, stack.isEmpty());
+
                             endOfFor = true;
                             break;
                         } else if (openedAtLast1 != '{' && openedAtLast1 != 0) {
 
-                            text = ErrorText(openedAtLast1, '}', i, stackIsEmpty);
+                            text = TextErr(openedAtLast1, '}', i, stack.isEmpty());
                             endOfFor = true;
                             break;
                         }
@@ -48,14 +46,12 @@ public class BraceChecker {
                     case ']':
                         char openedAtLast2 = stack.pop();
                         if (openedAtLast2 == 0) {
-                            stackIsEmpty = true;
-                            text = ErrorText('[', c, i, stackIsEmpty);
-                            stackIsEmpty = false;
+                            text = TextErr('[', c, i, stack.isEmpty());
                             endOfFor = true;
                             break;
                         } else if (openedAtLast2 != '[' && openedAtLast2 != 0) {
 
-                            text = ErrorText(openedAtLast2, ']', i, stackIsEmpty);
+                            text = TextErr(openedAtLast2, ']', i, stack.isEmpty());
                             endOfFor = true;
                             break;
                         }
@@ -64,14 +60,12 @@ public class BraceChecker {
                     case ')':
                         char openedAtLast3 = stack.pop();
                         if (openedAtLast3 == 0) {
-                            stackIsEmpty = true;
-                            text = ErrorText('(', c, i, stackIsEmpty);
-                            stackIsEmpty = false;
+                            text = TextErr('(', c, i, stack.isEmpty());
                             endOfFor = true;
                             break;
                         } else if (openedAtLast3 != '(' && openedAtLast3 != 0) {
                             endOfFor = true;
-                            text = ErrorText(openedAtLast3, ')', i, stackIsEmpty);
+                            text = TextErr(openedAtLast3, ')', i, stack.isEmpty());
                             break;
                         }
                         break;
@@ -93,7 +87,7 @@ public class BraceChecker {
 
     }
 
-    private String ErrorText(char lastOpened, char c, int index, Boolean stackIsEmpty) {
+    private String TextErr(char lastOpened, char c, int index, Boolean stackIsEmpty) {
 
         if (stackIsEmpty) {
 
