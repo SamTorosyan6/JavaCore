@@ -1,20 +1,49 @@
 package library;
 
-import java.util.Objects;
-
 public class Book {
 
     private String title;
     private String authorName;
     private double price;
+    private int id;
+    private int quantity;
 
-    public Book(String title, String authorName, double price) {
+    @Override
+    public String toString() {
+        return "Book{" +
+                "title='" + title + '\'' +
+                ", authorName='" + authorName + '\'' +
+                ", price=" + price +
+                ", id=" + id +
+                ", quantity=" + quantity +
+                '}';
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Book(String title, String authorName, double price, int id, int quantity) {
         this.title = title;
         this.authorName = authorName;
         this.price = price;
+        this.id = id;
+        this.quantity = quantity;
     }
 
-    public Book(){
+    public Book() {
 
     }
 
@@ -42,15 +71,5 @@ public class Book {
         this.price = price;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
-        return Double.compare(price, book.price) == 0 && Objects.equals(title, book.title) && Objects.equals(authorName, book.authorName);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, authorName, price);
-    }
 }
