@@ -1,4 +1,7 @@
-package library;
+package library.storage;
+
+import library.model.Author;
+import library.model.Book;
 
 public class BookStorage {
 
@@ -58,7 +61,14 @@ public class BookStorage {
 
         }
 
+    }
 
+    public void searchBookByAuthor(Author author) {
+        for (int i = 0; i < size; i++) {
+            if (books[i].getAuthor().equals(author)) {
+                System.out.println(books[i]);
+            }
+        }
     }
 
     public Book getBookByMaxPrice() {
@@ -108,7 +118,7 @@ public class BookStorage {
 
         for (int i = 0; i < size; i++) {
 
-            if (books[i].getPrice() >= min && books[i].getPrice() <= max){
+            if (books[i].getPrice() >= min && books[i].getPrice() <= max) {
                 bookFound = true;
                 System.out.println(books[i].toString());
             } else if (max < min) {
@@ -118,12 +128,11 @@ public class BookStorage {
 
         }
 
-        if (!bookFound){
+        if (!bookFound) {
             System.err.println("No books were found within the price range you entered!");
         }
 
     }
-
 
 
 }

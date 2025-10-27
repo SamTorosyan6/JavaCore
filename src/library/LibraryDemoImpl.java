@@ -1,5 +1,10 @@
 package library;
 
+import library.model.Author;
+import library.model.Book;
+import library.storage.AuthorStorage;
+import library.storage.BookStorage;
+
 import java.util.Scanner;
 
 public class LibraryDemoImpl implements Commands {
@@ -7,12 +12,13 @@ public class LibraryDemoImpl implements Commands {
     private static Scanner scanner = new Scanner(System.in);
     private static boolean isRun = true;
     private static BookStorage bookStorage = new BookStorage();
+    private static AuthorStorage authorStorage = new AuthorStorage();
 
     static void main() {
 
         while (isRun) {
 
-            printCommands();
+            Commands.printCommands();
             String command = scanner.nextLine();
 
             switch (command) {
@@ -20,11 +26,20 @@ public class LibraryDemoImpl implements Commands {
                 case EXIT:
                     isRun = false;
                     break;
+                case ADD_AUTHOR:
+                    addAuthor();
+                    break;
                 case ADD_BOOK:
                     addBook();
                     break;
+                case PRINT_ALL_AUTHORS:
+                    authorStorage.print();
+                    break;
                 case PRINT_ALL_BOOKS:
                     bookStorage.print();
+                    break;
+                case SEARCH_BOOK_BY_AUTHOR:
+                    searchBookByAuthor();
                     break;
                 case SEARCH_BOOK_BY_TITLE:
                     System.out.println("Please input keyword");
@@ -50,35 +65,61 @@ public class LibraryDemoImpl implements Commands {
 
     }
 
+    private static void searchBookByAuthor() {
+
+        System.out.println("Please choose author by phone number");
+
+        authorStorage.print();
+        String phoneNumber = scanner.nextLine();
+        Author author = authorStorage.getAuthorByPhoneNumber(phoneNumber);
+        if (author != null) {
+            bookStorage.searchBookByAuthor(author);
+
+        } else {
+            System.err.println("Wrong author's phone number, please try again!!!");
+        }
+
+    }
+
+    private static void addAuthor() {
+
+        System.out.println("Please input author's name");
+        String name = scanner.nextLine();
+        System.out.println("Please input author's surname");
+        String surname = scanner.nextLine();
+        System.out.println("Please input author's age");
+        int age = Integer.parseInt(scanner.nextLine());
+        System.out.println("Please input book's id");
+        String phoneNumber = scanner.nextLine();
+        Author book = new Author(name, surname, age, phoneNumber);
+        authorStorage.add(book);
+        System.out.println("Author added successfully!!!");
+
+    }
+
     private static void addBook() {
 
-        System.out.println("Please input book's title");
-        String bookTitle = scanner.nextLine();
-        System.out.println("Please input book's author name");
-        String authorName = scanner.nextLine();
-        System.out.println("Please input book's price");
-        double price = Double.parseDouble(scanner.nextLine());
-        System.out.println("Please input book's id");
-        int id = Integer.parseInt(scanner.nextLine());
-        System.out.println("Please input book's count");
-        int quantity = Integer.parseInt(scanner.nextLine());
-        Book book = new Book(bookTitle, authorName, price, id, quantity);
-        bookStorage.add(book);
+        System.out.println("Please choose author by phone number");
 
+        authorStorage.print();
+        String phoneNumber = scanner.nextLine();
+        Author author = authorStorage.getAuthorByPhoneNumber(phoneNumber);
+        if (author != null) {
+            System.out.println("Please input book's title");
+            String bookTitle = scanner.nextLine();
+            System.out.println("Please input book's price");
+            double price = Double.parseDouble(scanner.nextLine());
+            System.out.println("Please input book's id");
+            int id = Integer.parseInt(scanner.nextLine());
+            System.out.println("Please input book's count");
+            int quantity = Integer.parseInt(scanner.nextLine());
+            Book book = new Book(bookTitle, author, price, id, quantity);
+            bookStorage.add(book);
+        } else {
+            System.err.println("Wrong author's phone number, please try again!!!");
+        }
     }
 
-    private static void printCommands() {
-
-        System.out.println("Please input " + EXIT + " for EXIT");
-        System.out.println("Please input " + ADD_BOOK + " for ADD BOOK");
-        System.out.println("Please input " + PRINT_ALL_BOOKS + " for PRINT ALL BOOKS");
-        System.out.println("Please input " + SEARCH_BOOK_BY_TITLE + " for SEARCH BOOK BY TITLE");
-        System.out.println("Please input " + PRINT_EXPENSIVE_BOOK + " for PRINT EXPENSIVE BOOK");
-        System.out.println("Please input " + DELETE_BOOK_BY_ID + " for DELETE THE BOOK BY ID");
-        System.out.println("Please input " + SEARCH_BOOK_BY_PRICE_RANGE + " for PRINT BOOKS BY PRICE RANGE");
-
-
-    }
 
     private static void searchBookByPriceRange() {
 
