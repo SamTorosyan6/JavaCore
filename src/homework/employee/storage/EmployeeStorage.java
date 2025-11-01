@@ -1,6 +1,7 @@
 package homework.employee.storage;
 
 import homework.employee.Commands;
+import homework.employee.EmployeeNotFoundException;
 import homework.employee.model.Employee;
 
 public class EmployeeStorage implements Commands {
@@ -44,7 +45,7 @@ public class EmployeeStorage implements Commands {
         } else System.out.println("There are no employees yet!");
     }
 
-    public void searchEmployeeByCompany(String company) {
+    public void searchEmployeeByCompany(String company) throws EmployeeNotFoundException {
 
         boolean employeeFound = false;
 
@@ -56,12 +57,13 @@ public class EmployeeStorage implements Commands {
         }
 
         if (!employeeFound) {
-            System.err.println("No employees were found for the company name you specified!!!");
+            throw new EmployeeNotFoundException("No employees were found for the company name you specified!!!");
+
         }
 
     }
 
-    public void searchEmployeeByEmplID(String emplID) {
+    public void searchEmployeeByEmplID(String emplID) throws EmployeeNotFoundException {
 
         boolean employeeFound = false;
 
@@ -74,8 +76,7 @@ public class EmployeeStorage implements Commands {
         }
 
         if (!employeeFound) {
-            System.err.println("Employee with this '" + emplID + "' id not found, please try again!!!");
-
+            throw new EmployeeNotFoundException("Employee with this '" + emplID + "' id not found, please try again!!!");
         }
 
     }
