@@ -1,6 +1,7 @@
 package homework.employee;
 
 import homework.employee.model.Employee;
+import homework.employee.model.PositionLevel;
 import homework.employee.storage.EmployeeStorage;
 
 import java.util.Scanner;
@@ -47,6 +48,18 @@ public class EmployeeDemo implements Commands {
                         System.err.println(e.getMessage());
                     }
                     break;
+                case SEARCH_EMPLOYEES_BY_POSITION_LEVEL:
+                    System.out.println("Please input position level (JUNIOR, MIDDLE, SENIOR, LEAD)");
+                    String levelStr = scanner.nextLine().toUpperCase();
+                    try {
+                        PositionLevel positionLevel = PositionLevel.valueOf(levelStr);
+                        employeeStorage.searchEmployeesByPositionLevel(positionLevel);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Invalid level! Please input one of: JUNIOR, MIDDLE, SENIOR, LEAD");
+                    } catch (EmployeeNotFoundException e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
                 default:
                     System.err.println("Please input correct command!");
 
@@ -70,9 +83,17 @@ public class EmployeeDemo implements Commands {
         String company = scanner.nextLine();
         System.out.println("Please input employee's position");
         String position = scanner.nextLine();
-        Employee employee = new Employee(name, surname, ID, salary, company, position);
-        employeeStorage.add(employee);
-        System.out.println("Employee added successfully!");
+        System.out.println("Please input position level (JUNIOR, MIDDLE, SENIOR, LEAD)");
+        String positionLevelStr = scanner.nextLine().toUpperCase();
+        try {
+            PositionLevel positionLevel = PositionLevel.valueOf(positionLevelStr);
+            Employee employee = new Employee(name, surname, ID, salary, company, position, positionLevel);
+            employeeStorage.add(employee);
+            System.out.println("Employee added successfully!");
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid position level! Please input one of: JUNIOR, MIDDLE, SENIOR, LEAD");
+        }
+
 
     }
 

@@ -3,6 +3,7 @@ package homework.employee.storage;
 import homework.employee.Commands;
 import homework.employee.EmployeeNotFoundException;
 import homework.employee.model.Employee;
+import homework.employee.model.PositionLevel;
 
 public class EmployeeStorage implements Commands {
 
@@ -22,6 +23,7 @@ public class EmployeeStorage implements Commands {
                 employeeFound = true;
                 System.err.println("There is already a employee registered with id: " + employees[i].getEmployeeID());
                 System.err.println(employees[i].toString());
+                return;
             }
         }
 
@@ -80,4 +82,19 @@ public class EmployeeStorage implements Commands {
         }
 
     }
+
+    public void searchEmployeesByPositionLevel(PositionLevel positionLevel) throws EmployeeNotFoundException {
+        boolean found = false;
+        for (int i = 0; i < size; i++) {
+            if (employees[i].getLevel() == positionLevel) {
+                System.out.println(employees[i]);
+                found = true;
+            }
+        }
+        if (!found) {
+            throw new EmployeeNotFoundException("No employees found with level: " + positionLevel);
+        }
+
+    }
+
 }
