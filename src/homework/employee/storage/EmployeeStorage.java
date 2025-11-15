@@ -1,7 +1,7 @@
 package homework.employee.storage;
 
 import homework.employee.Commands;
-import homework.employee.EmployeeNotFoundException;
+import homework.employee.exceptions.EmployeeNotFoundException;
 import homework.employee.model.Employee;
 import homework.employee.model.PositionLevel;
 

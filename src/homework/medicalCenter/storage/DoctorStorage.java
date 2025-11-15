@@ -83,7 +83,7 @@ public class DoctorStorage {
 
         for (int i = 0; i < size; i++) {
 
-            if (doctors[i].getId() == docId){
+            if (doctors[i].getId() == docId) {
 
                 System.out.println("The doctor found" + doctors[i].toString());
                 System.out.println("Please input new doctor's name");
@@ -102,7 +102,7 @@ public class DoctorStorage {
                 String professionStr = scanner.nextLine();
                 Profession newProfession = Profession.valueOf(professionStr);
 
-                Doctor newDoctor = new Doctor(doctors[i].getId(),doctorName,doctorSurname,email,phoneNumber,newProfession);
+                Doctor newDoctor = new Doctor(doctors[i].getId(), doctorName, doctorSurname, email, phoneNumber, newProfession);
                 doctors[i] = newDoctor;
                 System.out.println("Doctor updated successfully!");
                 return;
@@ -113,4 +113,16 @@ public class DoctorStorage {
         throw new DoctorNotFoundException("No doctor found with id " + docId);
 
     }
+
+    public Doctor getDoctorById(int doctorId) {
+
+        for (int i = 0; i < size; i++) {
+            if (doctors[i].getId() == doctorId) {
+                return doctors[i];
+            }
+        }
+        return null;
+    }
+
 }
+

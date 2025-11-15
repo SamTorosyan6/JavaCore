@@ -1,4 +1,4 @@
-package homework.employee;
+package homework.employee.exceptions;
 
 public class EmployeeNotFoundException extends Exception {
 
