@@ -4,7 +4,7 @@ import homework.medicalCenter.enums.Profession;
 
 import java.util.Objects;
 
-public class Doctor extends Person{
+public class Doctor extends Person {
 
     private String email;
     private Profession profession;
@@ -14,9 +14,9 @@ public class Doctor extends Person{
 
     public Doctor(int id, String name, String surname, String email, int phoneNumber, Profession profession) {
 
-        super(id, name, surname,phoneNumber);
+        super(id, name, surname, phoneNumber);
         this.profession = profession;
-
+        this.email = email;
     }
 
     public String getEmail() {

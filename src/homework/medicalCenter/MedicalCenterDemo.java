@@ -29,13 +29,17 @@ public class MedicalCenterDemo implements Commands {
                 case EXIT:
                     isRun = false;
                     break;
+                case ADD_DOCTOR:
+                    addDoctor();
+                    break;
                 case SEARCH_DOCTOR_BY_PROFESSION:
                     System.out.print("Please input one of these professions:");
                     for (Profession profession : professions) {
                         System.out.print(profession + "  ");
                     }
+                    System.out.println();
                     String profession = scanner.nextLine();
-                    doctorStorage.searchDoctorByProfession(Profession.valueOf(profession));
+                    doctorStorage.searchDoctorByProfession(Profession.valueOf(profession.toUpperCase()));
                     break;
                 case DELETE_DOCTOR_BY_ID:
                     System.out.println("Please input doctor's id");
@@ -61,7 +65,7 @@ public class MedicalCenterDemo implements Commands {
                         System.out.println("Doctor not found!");
                     }
                     break;
-                    case PRINT_ALL_PATIENTS:
+                case PRINT_ALL_PATIENTS:
                     patientStorage.printAllPatients();
                     break;
             }
@@ -97,5 +101,52 @@ public class MedicalCenterDemo implements Commands {
         System.out.println("Patient registered successfully!");
 
     }
+
+    private static void addDoctor() {
+
+        System.out.println("Please input doctor's id:");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        if (doctorStorage.getDoctorById(id) != null) {
+            System.out.println("Doctor with this ID already exists!");
+            return;
+        }
+
+        System.out.println("Please input doctor's name:");
+        String name = scanner.nextLine();
+
+        System.out.println("Please input doctor's surname:");
+        String surname = scanner.nextLine();
+
+        System.out.println("Please input doctor's email:");
+        String email = scanner.nextLine();
+
+        System.out.println("Please input doctor's phone number:");
+        int phone = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println("Please choose doctor's profession from list:");
+        for (Profession p : professions) {
+            System.out.print(p + "  ");
+        }
+        System.out.println();
+
+        String profStr = scanner.nextLine();
+        Profession profession;
+
+        try {
+            profession = Profession.valueOf(profStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid profession!");
+            return;
+        }
+
+        Doctor doctor = new Doctor(id, name, surname, email, phone, profession);
+        doctorStorage.add(doctor);
+
+        System.out.println("Doctor added successfully!");
+    }
+
 
 }
