@@ -6,6 +6,7 @@ import homework.medicalCenter.model.Doctor;
 import homework.medicalCenter.model.Patient;
 import homework.medicalCenter.storage.DoctorStorage;
 import homework.medicalCenter.storage.PatientStorage;
+import homework.medicalCenter.util.FileUtil;
 
 import java.util.Date;
 import java.util.Scanner;
@@ -14,8 +15,8 @@ public class MedicalCenterDemo implements Commands {
 
     private static Scanner scanner = new Scanner(System.in);
     private static Boolean isRun = true;
-    private static DoctorStorage doctorStorage = new DoctorStorage();
-    private static PatientStorage patientStorage = new PatientStorage();
+    private static DoctorStorage doctorStorage = FileUtil.deserializeDoctorStorage();
+    private static PatientStorage patientStorage = FileUtil.deserializePatientStorage();
     private static Profession[] professions = Profession.values();
 
     static void main() {
@@ -31,6 +32,7 @@ public class MedicalCenterDemo implements Commands {
                     break;
                 case ADD_DOCTOR:
                     addDoctor();
+                    FileUtil.serializeDoctorData(doctorStorage);
                     break;
                 case SEARCH_DOCTOR_BY_PROFESSION:
                     System.out.print("Please input one of these professions:");
@@ -46,13 +48,17 @@ public class MedicalCenterDemo implements Commands {
                     int doctorId = scanner.nextInt();
                     scanner.nextLine();
                     doctorStorage.deleteDoctorById(doctorId);
+                    FileUtil.serializeDoctorData(doctorStorage);
                     break;
                 case CHANGE_DOCTOR_BY_ID:
                     System.out.println("Please input doctor's id");
                     int docId = scanner.nextInt();
                     doctorStorage.changeDoctorById(docId);
+                    FileUtil.serializeDoctorData(doctorStorage);
+                    break;
                 case ADD_PATIENT:
                     addPatient();
+                    FileUtil.serializePatientData(patientStorage);
                     break;
                 case PRINT_ALL_PATIENTS_BY_DOCTOR:
                     System.out.println("Please input doctor's id");
@@ -93,7 +99,7 @@ public class MedicalCenterDemo implements Commands {
         String patientSurname = scanner.nextLine();
         System.out.println("Please input patient's phone number");
         int phoneNumber = scanner.nextInt();
-
+        scanner.nextLine();
         Date date = new Date();
         Patient patient = new Patient(patientId, patientName, patientSurname, phoneNumber, doctor, date);
 

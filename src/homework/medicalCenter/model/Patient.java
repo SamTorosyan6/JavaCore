@@ -1,9 +1,10 @@
 package homework.medicalCenter.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class Patient extends Person{
+public class Patient extends Person implements Serializable {
 
     Doctor doctor;
     Date registerDateTime;

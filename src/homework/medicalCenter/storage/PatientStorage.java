@@ -3,7 +3,9 @@ package homework.medicalCenter.storage;
 import homework.medicalCenter.model.Doctor;
 import homework.medicalCenter.model.Patient;
 
-public class PatientStorage {
+import java.io.Serializable;
+
+public class PatientStorage implements Serializable {
 
     private Patient[] patients = new Patient[10];
     private int size = 0;

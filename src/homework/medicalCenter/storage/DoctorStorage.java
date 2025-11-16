@@ -4,9 +4,10 @@ import homework.medicalCenter.enums.Profession;
 import homework.medicalCenter.exceptions.DoctorNotFoundException;
 import homework.medicalCenter.model.Doctor;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class DoctorStorage {
+public class DoctorStorage implements Serializable {
 
     private int size;
     private Doctor[] doctors = new Doctor[10];
@@ -94,13 +95,13 @@ public class DoctorStorage {
                 String email = scanner.nextLine();
                 System.out.println("Please input new doctor's phone number");
                 int phoneNumber = scanner.nextInt();
-                System.out.print("Please input new profession (");
+                scanner.nextLine();
+                System.out.print("Please input new profession ");
                 for (Profession profession : Profession.values()) {
                     System.out.print(profession + "  ");
                 }
-
-                String professionStr = scanner.nextLine();
-                Profession newProfession = Profession.valueOf(professionStr);
+                System.out.println();
+                Profession newProfession = Profession.valueOf(scanner.nextLine().toUpperCase());
 
                 Doctor newDoctor = new Doctor(doctors[i].getId(), doctorName, doctorSurname, email, phoneNumber, newProfession);
                 doctors[i] = newDoctor;
