@@ -3,70 +3,53 @@ package library.storage;
 import library.model.Author;
 import library.model.Book;
 
-public class BookStorage {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-    private int size;
-    private Book[] books = new Book[10];
+public class BookStorage implements Serializable {
+
+    private List<Book> books = new ArrayList<>();
 
     public void add(Book book) {
 
         boolean bookFound = false;
 
-        if (size == books.length) {
+        for (Book b : books) {
 
-            extend();
-        }
-
-        for (int i = 0; i < size; i++) {
-
-            if (books[i].getId() == book.getId()) {
+            if (b.getId() == book.getId())
                 bookFound = true;
-                System.err.println("There is already a book registered with id: " + books[i].getId());
-                System.err.println(books[i].toString());
-            }
+            System.err.println("There is already a book registered with id: " + book.getId());
+            System.err.println(book.toString());
+
         }
         if (!bookFound) {
-            books[size++] = book;
-
+            books.add(book);
         }
-    }
-
-    private void extend() {
-
-        Book[] tmp = new Book[size + 10];
-        System.arraycopy(books, 0, tmp, 0, size);
-        books = tmp;
-
     }
 
     public void print() {
 
-        for (int i = 0; i < size; i++) {
-
-            System.out.println(books[i].toString());
-
+        for (Object book : books) {
+            System.out.println(book.toString());
         }
 
     }
 
     public void search(String keyword) {
 
-        for (int i = 0; i < size; i++) {
-
-            if (books[i].getTitle().toLowerCase().contains(keyword.toLowerCase())) {
-
-                System.out.println(books[i]);
-
+        for (Book book : books) {
+            if (book.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                System.out.println(book);
             }
-
         }
-
     }
 
     public void searchBookByAuthor(Author author) {
-        for (int i = 0; i < size; i++) {
-            if (books[i].getAuthor().equals(author)) {
-                System.out.println(books[i]);
+
+        for (Book book : books) {
+            if (book.getAuthor().equals(author)) {
+                System.out.println(book);
             }
         }
     }
@@ -74,65 +57,51 @@ public class BookStorage {
     public Book getBookByMaxPrice() {
 
         double price = 0;
-        int maxIndex = -1;
+        Book result = null;
 
-        for (int i = 0; i < size; i++) {
-
-            if (books[i].getPrice() > price) {
-                maxIndex = i;
-                price = books[i].getPrice();
-
+        for (Book book : books) {
+            if (book.getPrice() > price) {
+                result = book;
             }
-
         }
-
-        return books[maxIndex];
-
+        return result;
     }
 
     public void deleteBookById(int id) {
 
         boolean bookFound = false;
 
-        for (int i = 0; i < size; i++) {
-            if (books[i].getId() == id) {
-                for (int j = i; j < size - 1; j++) {
-                    books[j] = books[j + 1];
-                }
-                size--;
+        for (Book book : books) {
+            if (book.getId() == id) {
+                books.remove(book);
                 bookFound = true;
                 System.out.println("The book by id " + id + " deleted.");
                 break;
             }
         }
-
-        if (!bookFound) {
-            System.err.println("No book found with id " + id);
-        }
-
     }
 
     public void searchBookByPriceRange(int min, int max) {
 
         boolean bookFound = false;
 
-        for (int i = 0; i < size; i++) {
+        for (Book book : books) {
 
-            if (books[i].getPrice() >= min && books[i].getPrice() <= max) {
+            if (book.getPrice() >= min && book.getPrice() <= max) {
                 bookFound = true;
-                System.out.println(books[i].toString());
+                System.out.println(book.toString());
             } else if (max < min) {
                 System.err.println("Error: Minimum price is greater than the Maximum! ");
                 break;
             }
 
         }
-
         if (!bookFound) {
             System.err.println("No books were found within the price range you entered!");
         }
-
     }
-
-
 }
+
+
+
+

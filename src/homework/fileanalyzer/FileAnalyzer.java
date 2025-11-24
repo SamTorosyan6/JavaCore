@@ -39,37 +39,20 @@ public class FileAnalyzer implements Comparator {
 
     public int totalWordCount(String path) throws IOException {
         // Читаем файл, подсчитываем общее количество слов
-        String textFile = Files.readString(Paths.get(path));
-
         int countOfWords = 0;
 
-        String[] words = textFile.split("\\W+");
-        LinkedList<String> wordsList = new LinkedList<>(Arrays.asList(words));
-
-        for (String word : wordsList) {
-            if (!word.isEmpty()) {
-                countOfWords++;
-            }
+        Map<String, Integer> stringIntegerMap = new HashMap<>(wordMap(path));
+        for (Integer value : stringIntegerMap.values()) {
+            countOfWords += value;
         }
         return countOfWords;
     }
 
     public int uniqueWordCount(String path) throws IOException {
         // Читаем файл, подсчитываем количество уникальных слов
-        String textFile = Files.readString(Paths.get(path));
+        Map<String, Integer> stringIntegerMap = wordMap(path);
 
-        String[] words = textFile.split("\\W+");
-        LinkedList<String> wordsList = new LinkedList<>(Arrays.asList(words));
-        Set<String> uniqueWords = new HashSet<>();
-
-        for (String word : wordsList) {
-
-            if (word.isEmpty()) continue;
-            uniqueWords.add(word.toLowerCase());
-
-        }
-
-        return uniqueWords.size();
+        return stringIntegerMap.size();
     }
 
     public Map<String, Integer> topFrequentWords(String path, int n) throws IOException {

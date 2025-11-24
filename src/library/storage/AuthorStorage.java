@@ -2,47 +2,30 @@ package library.storage;
 
 import library.model.Author;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class AuthorStorage {
 
-    private int size = 0;
-    private Author[] authors = new Author[10];
+    private List<Author> authors = new LinkedList<>();
 
     public void add(Author author) {
-
-        boolean authorFound = false;
-
-        if (size == authors.length) {
-
-            extend();
-        }
-
+        authors.add(author);
     }
 
-    private void extend() {
-
-        Author[] tmp = new Author[size + 10];
-        System.arraycopy(authors, 0, tmp, 0, size);
-        authors = tmp;
-
-    }
 
     public Author getAuthorByPhoneNumber(String phoneNumber) {
-        for (int i = 0; i < size; i++) {
-            if (phoneNumber.equals(authors[i].getPhoneNumber())) {
-                return authors[i];
+        for (Author author : authors) {
+            if (phoneNumber.equals(author.getPhoneNumber())) {
+                return author;
             }
         }
         return null;
     }
 
     public void print() {
-
-        for (int i = 0; i < size; i++) {
-
-            System.out.println(authors[i].toString());
-
+        for (Author author : authors) {
+            System.out.println(author.toString());
         }
-
     }
-
 }
