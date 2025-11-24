@@ -3,55 +3,48 @@ package homework.medicalCenter.storage;
 import homework.medicalCenter.enums.Profession;
 import homework.medicalCenter.exceptions.DoctorNotFoundException;
 import homework.medicalCenter.model.Doctor;
+import homework.medicalCenter.model.User;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class DoctorStorage implements Serializable {
 
-    private int size;
-    private Doctor[] doctors = new Doctor[10];
+    private List<Doctor> doctors = new ArrayList<>();
 
     public void add(Doctor doctor) {
 
         boolean doctorFound = false;
 
-        if (size == doctors.length) {
-            extend();
-        }
-
-        for (int i = 0; i < size; i++) {
-            if (doctors[i].getId() == doctor.getId()) {
+        for (Doctor d : doctors) {
+            if (doctor.getId() == d.getId()) {
                 doctorFound = true;
-                System.err.println("There is already a doctor registered with id: " + doctors[i].getId());
-                System.err.println(doctors[i].toString());
+                System.err.println("There is already a doctor registered with id: " + doctor.getId());
+                System.err.println(d.toString());
                 return;
             }
         }
 
         if (!doctorFound) {
-            doctors[size++] = doctor;
-
+            doctors.add(doctor);
+            System.out.println("Doctor added successfully!");
         }
-    }
-
-    private void extend() {
-        Doctor[] tmp = new Doctor[size + 10];
-        System.arraycopy(doctors, 0, tmp, 0, size);
-        doctors = tmp;
     }
 
     public void searchDoctorByProfession(Profession profession) throws DoctorNotFoundException {
 
         boolean found = false;
-        for (int i = 0; i < size; i++) {
-            if (doctors[i].getProfession() == profession) {
-                System.out.println(doctors[i].toString());
+
+        for (Doctor doctor : doctors) {
+            if (doctor.getProfession() == profession) {
+                System.out.println(doctor.toString());
                 found = true;
             }
         }
         if (!found) {
-            throw new DoctorNotFoundException("No doctors found with level: " + profession);
+            System.err.println("No doctors found with level: " + profession);
         }
 
     }
@@ -60,13 +53,10 @@ public class DoctorStorage implements Serializable {
 
         boolean doctorFound = false;
 
-        for (int i = 0; i < size; i++) {
-            if (doctors[i].getId() == doctorId) {
-                for (int j = i; j < size - 1; j++) {
-                    doctors[j] = doctors[j + 1];
-                }
-                size--;
+        for (Doctor doctor : doctors) {
+            if (doctor.getId() == doctorId) {
                 doctorFound = true;
+                doctors.remove(doctor);
                 System.out.println("The doctor by id " + doctorId + " deleted.");
                 break;
             }
@@ -78,15 +68,15 @@ public class DoctorStorage implements Serializable {
 
     }
 
-    public void changeDoctorById(int docId) {
+    public void changeDoctorById(int docId, User loggedUser) {
 
         Scanner scanner = new Scanner(System.in);
 
-        for (int i = 0; i < size; i++) {
+        for (Doctor doctor : doctors) {
 
-            if (doctors[i].getId() == docId) {
+            if (doctor.getId() == docId) {
 
-                System.out.println("The doctor found" + doctors[i].toString());
+                System.out.println("The doctor found" + doctor.toString());
                 System.out.println("Please input new doctor's name");
                 String doctorName = scanner.nextLine();
                 System.out.println("Please input new doctor's surname");
@@ -103,8 +93,8 @@ public class DoctorStorage implements Serializable {
                 System.out.println();
                 Profession newProfession = Profession.valueOf(scanner.nextLine().toUpperCase());
 
-                Doctor newDoctor = new Doctor(doctors[i].getId(), doctorName, doctorSurname, email, phoneNumber, newProfession);
-                doctors[i] = newDoctor;
+                Doctor newDoctor = new Doctor(doctor.getId(), doctorName, doctorSurname, email, phoneNumber, newProfession,loggedUser);
+                doctor = newDoctor;
                 System.out.println("Doctor updated successfully!");
                 return;
             }
@@ -117,9 +107,9 @@ public class DoctorStorage implements Serializable {
 
     public Doctor getDoctorById(int doctorId) {
 
-        for (int i = 0; i < size; i++) {
-            if (doctors[i].getId() == doctorId) {
-                return doctors[i];
+        for (Doctor doctor : doctors) {
+            if (doctor.getId() == doctorId) {
+                return doctor;
             }
         }
         return null;

@@ -10,9 +10,9 @@ public interface Commands {
     String ADD_PATIENT = "5";
     String PRINT_ALL_PATIENTS_BY_DOCTOR = "6";
     String PRINT_ALL_PATIENTS = "7";
+    String LOGOUT = "8";
 
     static void printCommands() {
-
         System.out.println("Please input " + EXIT + " for EXIT");
         System.out.println("Please input " + ADD_DOCTOR + " for ADD DOCTOR");
         System.out.println("Please input " + SEARCH_DOCTOR_BY_PROFESSION + " for SEARCH DOCTOR BY PROFESSION");
@@ -21,6 +21,7 @@ public interface Commands {
         System.out.println("Please input " + ADD_PATIENT + " for ADD PATIENT");
         System.out.println("Please input " + PRINT_ALL_PATIENTS_BY_DOCTOR + " for PRINT ALL PATIENTS BY DOCTOR");
         System.out.println("Please input " + PRINT_ALL_PATIENTS + " for PRINT ALL PATIENTS");
+        System.out.println("Please input " + LOGOUT + " for LOG OUT");
     }
 
 }

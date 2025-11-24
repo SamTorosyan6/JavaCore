@@ -4,37 +4,30 @@ import homework.medicalCenter.model.Doctor;
 import homework.medicalCenter.model.Patient;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientStorage implements Serializable {
 
-    private Patient[] patients = new Patient[10];
-    private int size = 0;
+    private List<Patient> patients = new ArrayList<>();
 
     public void add(Patient patient) {
-        if (size == patients.length) {
-            extend();
-        }
-        patients[size++] = patient;
-    }
-
-    private void extend() {
-        Patient[] tmp = new Patient[patients.length + 10];
-        System.arraycopy(patients, 0, tmp, 0, size);
-        patients = tmp;
+        patients.add(patient);
     }
 
     public void printAllPatients() {
-        for (int i = 0; i < size; i++) {
-            System.out.println(patients[i]);
+        for (Patient patient : patients) {
+            System.out.println(patient);
         }
     }
 
     public void printPatientsByDoctor(Doctor doctor) {
+
         boolean found = false;
 
-        for (int i = 0; i < size; i++) {
-            if (patients[i].getDoctor().equals(doctor)) {
-                System.out.println(patients[i]);
+        for (Patient patient : patients) {
+            if (patient.getDoctor().equals(doctor)) {
+                System.out.println(patient);
                 found = true;
             }
         }
@@ -44,13 +37,14 @@ public class PatientStorage implements Serializable {
         }
     }
 
-    public Doctor getDoctorById(int doctorId) {
-        for (int i = 0; i < size; i++) {
-            if (patients[i].getDoctor().getId() == doctorId) {
-                return patients[i].getDoctor();
-            }
-        }
-        return null;
-    }
+//    public Doctor getDoctorById(int doctorId) {
+//        for (Patient patient : patients) {
+//            if (patient.getDoctor().getId() == doctorId) {
+//                return patient.getDoctor();
+//            }
+//        }
+//
+//        return null;
+//    }
 
 }

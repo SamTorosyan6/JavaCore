@@ -2,6 +2,7 @@ package homework.medicalCenter.util;
 
 import homework.medicalCenter.storage.DoctorStorage;
 import homework.medicalCenter.storage.PatientStorage;
+import homework.medicalCenter.storage.UserStorage;
 
 import java.io.*;
 
@@ -9,6 +10,7 @@ public abstract class FileUtil {
 
     private static final String PATIENT_DATA_FILE = "C:\\Users\\samve\\IdeaProjects\\JavaCore\\src\\homework\\medicalCenter\\data\\patientData.data";
     private static final String DOCTOR_DATA_FILE = "C:\\Users\\samve\\IdeaProjects\\JavaCore\\src\\homework\\medicalCenter\\data\\doctorData.data";
+    private static final String USER_DATA_FILE = "C:\\Users\\samve\\IdeaProjects\\JavaCore\\src\\homework\\medicalCenter\\data\\userData.data";
 
     public static void serializePatientData(PatientStorage patientStorage) {
 
@@ -25,7 +27,7 @@ public abstract class FileUtil {
     public static void serializeDoctorData(DoctorStorage doctorStorage) {
 
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(DOCTOR_DATA_FILE))) {
-        objectOutputStream.writeObject(doctorStorage);
+            objectOutputStream.writeObject(doctorStorage);
         } catch (FileNotFoundException e) {
             System.out.println("File not found for doctor data " + e);
         } catch (IOException e) {
@@ -37,7 +39,7 @@ public abstract class FileUtil {
     public static PatientStorage deserializePatientStorage() {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(PATIENT_DATA_FILE))) {
             Object object = objectInputStream.readObject();
-            if(object instanceof PatientStorage patientStorage){
+            if (object instanceof PatientStorage patientStorage) {
                 return patientStorage;
             }
         } catch (FileNotFoundException e) {
@@ -54,7 +56,7 @@ public abstract class FileUtil {
     public static DoctorStorage deserializeDoctorStorage() {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(DOCTOR_DATA_FILE))) {
             Object object = objectInputStream.readObject();
-            if(object instanceof DoctorStorage doctorStorage){
+            if (object instanceof DoctorStorage doctorStorage) {
                 return doctorStorage;
             }
         } catch (FileNotFoundException e) {
@@ -66,5 +68,35 @@ public abstract class FileUtil {
         }
 
         return new DoctorStorage();
+    }
+
+    public static void serializeUserData(UserStorage userStorage) {
+
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(USER_DATA_FILE))) {
+            objectOutputStream.writeObject(userStorage);
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found for user data " + e);
+        } catch (IOException e) {
+            System.out.println("Failed to Serialize user data " + e);
+        }
+
+    }
+
+    public static UserStorage deserializeUserStorage() {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(USER_DATA_FILE))) {
+            Object object = objectInputStream.readObject();
+            if (object instanceof UserStorage userStorage) {
+                return userStorage;
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found for user data " + e);
+        } catch (IOException e) {
+            System.out.println("Failed to deSerialize user data " + e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return new UserStorage();
+
     }
 }

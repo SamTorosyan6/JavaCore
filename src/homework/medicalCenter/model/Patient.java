@@ -8,19 +8,16 @@ public class Patient extends Person implements Serializable {
 
     Doctor doctor;
     Date registerDateTime;
+    User user;
 
     public Patient() {
     }
 
-    public Patient(Doctor doctor, Date registerDateTime) {
-        this.doctor = doctor;
-        this.registerDateTime = registerDateTime;
-    }
-
-    public Patient(int id, String name, String surname, int phoneNumber, Doctor doctor, Date registerDateTime) {
+    public Patient(int id, String name, String surname, int phoneNumber, Doctor doctor, Date registerDateTime,User user) {
         super(id, name, surname, phoneNumber);
         this.doctor = doctor;
         this.registerDateTime = registerDateTime;
+        this.user = user;
     }
 
     public Doctor getDoctor() {
@@ -39,17 +36,25 @@ public class Patient extends Person implements Serializable {
         this.registerDateTime = registerDateTime;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Patient patient = (Patient) o;
-        return Objects.equals(doctor, patient.doctor) && Objects.equals(registerDateTime, patient.registerDateTime);
+        return Objects.equals(doctor, patient.doctor) && Objects.equals(registerDateTime, patient.registerDateTime) && Objects.equals(user, patient.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), doctor, registerDateTime);
+        return Objects.hash(super.hashCode(), doctor, registerDateTime, user);
     }
 
     @Override
@@ -57,6 +62,7 @@ public class Patient extends Person implements Serializable {
         return "Patient{" +
                 "doctor=" + doctor +
                 ", registerDateTime=" + registerDateTime +
+                ", user=" + user +
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
