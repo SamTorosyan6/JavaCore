@@ -1,8 +1,10 @@
 package homework.medicalCenter;
 
 import homework.medicalCenter.enums.Profession;
+import homework.medicalCenter.enums.Role;
 import homework.medicalCenter.interfaces.Commands;
-import homework.medicalCenter.interfaces.Login;
+import homework.medicalCenter.interfaces.DoctorPageCommands;
+import homework.medicalCenter.interfaces.UserPageCommands;
 import homework.medicalCenter.model.Doctor;
 import homework.medicalCenter.model.Patient;
 import homework.medicalCenter.model.User;
@@ -14,10 +16,9 @@ import homework.medicalCenter.util.FileUtil;
 import java.util.Date;
 import java.util.Scanner;
 
-public class MedicalCenterDemo implements Commands, Login {
+public class MedicalCenterDemo implements Commands {
 
     private static Scanner scanner = new Scanner(System.in);
-    private static Boolean isRun = true;
     private static Boolean isRunLogin = true;
     private static DoctorStorage doctorStorage = FileUtil.deserializeDoctorStorage();
     private static PatientStorage patientStorage = FileUtil.deserializePatientStorage();
@@ -27,97 +28,208 @@ public class MedicalCenterDemo implements Commands, Login {
 
     static void main() {
 
-        while (true) {
+        boolean isRun = true;
 
-            isRunLogin = true;
+        while (isRun) {
+
             loggedUser = null;
 
             while (isRunLogin) {
 
-                Login.printCommands();
+                Commands.printCommands();
                 String loginCommand = scanner.nextLine();
 
                 switch (loginCommand) {
 
-                    case Login.EXIT:
+                    case EXIT_USER:
                         isRunLogin = false;
                         isRun = false;
                         break;
-                    case ADD_USER:
+                    case REGISTER:
                         addUser();
                         FileUtil.serializeUserData(userStorage);
                         break;
                     case LOGIN:
                         loggedUser = login();
-                        FileUtil.serializeUserData(userStorage);
-                        if (loggedUser != null) {
-                            isRunLogin = false;
+                        if (loggedUser != null && loggedUser.getRole().equals(Role.USER)) {
+                            isRun = false;
+                            userLogin();
+                            FileUtil.serializeUserData(userStorage);
                             break;
+                        } else if (loggedUser != null && loggedUser.getRole().equals(Role.DOCTOR)) {
+                            isRun = false;
+                            doctorLogin();
+                            FileUtil.serializeUserData(userStorage);
+                            break;
+                        } else if (loggedUser != null && loggedUser.getRole().equals(Role.ADMIN)) {
+                            isRun = false;
+                            adminLogin();
+                            FileUtil.serializeUserData(userStorage);
+                            break;
+                        } else {
+                            System.err.println("Invalid login or password, please try again!");
                         }
-                        break;
+                    default:
+                        System.err.println("Wrong command, please try again!");
                 }
-
             }
 
-            isRun = true;
+        }
+    }
 
-            while (isRun) {
-                if (!isRun == false) {
-                    Commands.printCommands();
-                    String command = scanner.nextLine();
-                    switch (command) {
-                        case Commands.EXIT:
-                            isRun = false;
-                            break;
-                        case ADD_DOCTOR:
-                            addDoctor();
-                            FileUtil.serializeDoctorData(doctorStorage);
-                            break;
-                        case SEARCH_DOCTOR_BY_PROFESSION:
-                            System.out.print("Please input one of these professions:");
-                            for (Profession profession : professions) {
-                                System.out.print(profession + "  ");
-                            }
-                            System.out.println();
-                            String profession = scanner.nextLine();
-                            doctorStorage.searchDoctorByProfession(Profession.valueOf(profession.toUpperCase()));
-                            break;
-                        case DELETE_DOCTOR_BY_ID:
-                            System.out.println("Please input doctor's id");
-                            int doctorId = scanner.nextInt();
-                            scanner.nextLine();
-                            doctorStorage.deleteDoctorById(doctorId);
-                            FileUtil.serializeDoctorData(doctorStorage);
-                            break;
-                        case CHANGE_DOCTOR_BY_ID:
-                            System.out.println("Please input doctor's id");
-                            int docId = scanner.nextInt();
-                            doctorStorage.changeDoctorById(docId, loggedUser);
-                            FileUtil.serializeDoctorData(doctorStorage);
-                            break;
-                        case ADD_PATIENT:
-                            addPatient();
-                            FileUtil.serializePatientData(patientStorage);
-                            break;
-                        case PRINT_ALL_PATIENTS_BY_DOCTOR:
-                            System.out.println("Please input doctor's id");
-                            int dId = scanner.nextInt();
-                            scanner.nextLine();
-                            Doctor doc = doctorStorage.getDoctorById(dId);
-                            if (doc != null) {
-                                patientStorage.printPatientsByDoctor(doc);
-                            } else {
-                                System.out.println("Doctor not found!");
-                            }
-                            break;
-                        case PRINT_ALL_PATIENTS:
-                            patientStorage.printAllPatients();
-                            break;
-                        case LOGOUT:
-                            isRun = false;
-                            break;
+    private static void adminLogin() {
+
+        boolean isRun = true;
+
+        while (isRun) {
+            Commands.printUserCommands();
+            String command = scanner.nextLine();
+            switch (command) {
+                case Commands.EXIT:
+                    isRun = false;
+                    break;
+                case REGISTER_USER:
+                    addUser();
+                    FileUtil.serializeUserData(userStorage);
+                    break;
+                case ADD_DOCTOR:
+                    addDoctor();
+                    FileUtil.serializeDoctorData(doctorStorage);
+                    break;
+                case SEARCH_DOCTOR_BY_PROFESSION:
+                    System.out.print("Please input one of these professions:");
+                    for (Profession profession : professions) {
+                        System.out.print(profession + "  ");
                     }
-                }
+                    System.out.println();
+                    String profession = scanner.nextLine();
+                    doctorStorage.searchDoctorByProfession(Profession.valueOf(profession.toUpperCase()));
+                    break;
+                case DELETE_DOCTOR_BY_ID:
+                    System.out.println("Please input doctor's id");
+                    int doctorId = scanner.nextInt();
+                    scanner.nextLine();
+                    doctorStorage.deleteDoctorById(doctorId);
+                    FileUtil.serializeDoctorData(doctorStorage);
+                    break;
+                case CHANGE_DOCTOR_BY_ID:
+                    System.out.println("Please input doctor's id");
+                    int docId = scanner.nextInt();
+                    doctorStorage.changeDoctorById(docId, loggedUser);
+                    FileUtil.serializeDoctorData(doctorStorage);
+                    break;
+                case ADD_PATIENT:
+                    addPatient();
+                    FileUtil.serializePatientData(patientStorage);
+                    break;
+                case PRINT_ALL_PATIENTS_BY_DOCTOR:
+                    System.out.println("Please input doctor's id");
+                    int dId = scanner.nextInt();
+                    scanner.nextLine();
+                    Doctor doc = doctorStorage.getDoctorById(dId);
+                    if (doc != null) {
+                        patientStorage.printPatientsByDoctor(doc);
+                    } else {
+                        System.out.println("Doctor not found!");
+                    }
+                    break;
+                case PRINT_ALL_PATIENTS:
+                    patientStorage.printAllPatients();
+                    break;
+                case LOGOUT:
+                    isRun = false;
+                    break;
+            }
+        }
+    }
+
+    private static void userLogin() {
+
+        boolean isRun = true;
+
+        while (isRun) {
+            UserPageCommands.printUserCommands();
+            String command = scanner.nextLine();
+            switch (command) {
+                case Commands.EXIT:
+                    isRun = false;
+                    break;
+                case UserPageCommands.SEARCH_DOCTOR_BY_PROFESSION:
+                    System.out.print("Please input one of these professions:");
+                    for (Profession profession : professions) {
+                        System.out.print(profession + "  ");
+                    }
+                    System.out.println();
+                    String profession = scanner.nextLine();
+                    doctorStorage.searchDoctorByProfession(Profession.valueOf(profession.toUpperCase()));
+                    break;
+                case UserPageCommands.ADD_PATIENT:
+                    addPatient();
+                    FileUtil.serializePatientData(patientStorage);
+                    break;
+                default:
+                    System.err.println("Wrong command, please try again!");
+            }
+        }
+    }
+
+    private static void addCurrentDoctorsPatient() {
+
+        Doctor doctor = doctorStorage.getDoctorById(loggedUser.getId());
+
+        System.out.println("Please input patient id:");
+        int patientId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println("Please input patient's name");
+        String patientName = scanner.nextLine();
+        System.out.println("Please input patient's surname");
+        String patientSurname = scanner.nextLine();
+        System.out.println("Please input patient's phone number");
+        int phoneNumber = scanner.nextInt();
+        scanner.nextLine();
+        Date date = new Date();
+        Patient patient = new Patient(patientId, patientName, patientSurname, phoneNumber, doctor, date, loggedUser);
+
+        patientStorage.add(patient);
+        System.out.println("Patient registered successfully!");
+
+    }
+
+    private static void doctorLogin() {
+
+        boolean isRun = true;
+
+        while (isRun) {
+
+            DoctorPageCommands.printUserCommands();
+            String command = scanner.nextLine();
+            switch (command) {
+                case EXIT:
+                    isRun = false;
+                    break;
+                case DoctorPageCommands.SEARCH_DOCTOR_BY_PROFESSION:
+                    System.out.print("Please input one of these professions:");
+                    for (Profession profession : professions) {
+                        System.out.print(profession + "  ");
+                    }
+                    System.out.println();
+                    String profession = scanner.nextLine();
+                    doctorStorage.searchDoctorByProfession(Profession.valueOf(profession.toUpperCase()));
+                    break;
+                case DoctorPageCommands.ADD_PATIENT:
+                    addCurrentDoctorsPatient();
+                    FileUtil.serializePatientData(patientStorage);
+                    break;
+                case DoctorPageCommands.PRINT_ALL_PATIENTS:
+                    Doctor doc = doctorStorage.getDoctorById(loggedUser.getId());
+                    if (doc != null) {
+                        patientStorage.printPatientsByDoctor(doc);
+                    } else {
+                        System.out.println("Doctor or patient not found!");
+                    }
+                    break;
+                default:
+                    System.err.println("Wrong command, please try again!");
             }
         }
     }
@@ -193,16 +305,22 @@ public class MedicalCenterDemo implements Commands, Login {
     }
 
     private static void addUser() {
+        System.out.println("Please input user's id:");
+        int userId = scanner.nextInt();
+        scanner.nextLine();
         System.out.println("Please input user's name:");
         String name = scanner.nextLine();
         System.out.println("Please input user's surname:");
         String surname = scanner.nextLine();
+        System.out.println("Please input user's phone number:");
+        int phoneNumber = scanner.nextInt();
+        scanner.nextLine();
         System.out.println("Please input user's email:");
         String email = scanner.nextLine();
         System.out.println("Please input user's password:");
         String password = scanner.nextLine();
 
-        User user = new User(name, surname, email, password);
+        User user = new User(userId, name, surname, phoneNumber, email, password, Role.USER);
         userStorage.addUser(user);
     }
 

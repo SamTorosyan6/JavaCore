@@ -1,6 +1,5 @@
 package homework.medicalCenter.storage;
 
-import homework.medicalCenter.exceptions.LoginOrPasswordIncorrectException;
 import homework.medicalCenter.model.User;
 
 import java.io.Serializable;
@@ -28,11 +27,19 @@ public class UserStorage implements Serializable {
     }
 
     public User login(String login, String password) {
+
+        boolean userFound = false;
+
         for (Map.Entry<String, User> stringUserEntry : userMap.entrySet()) {
             if (stringUserEntry.getKey().equals(login) && stringUserEntry.getValue().getPassword().equals(password)) {
                 System.out.println("You're logged in successfully!");
+                userFound = true;
                 return stringUserEntry.getValue();
-            } else System.err.println("Incorrect login or password!");
+            }
+        }
+        if (!userFound){
+            System.out.println("Incorrect login or password!");
+            return null;
         }
         return null;
     }

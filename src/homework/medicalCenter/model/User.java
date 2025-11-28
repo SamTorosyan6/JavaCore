@@ -1,5 +1,7 @@
 package homework.medicalCenter.model;
 
+import homework.medicalCenter.enums.Role;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -7,31 +9,22 @@ public class User extends Person implements Serializable {
 
     private String email;
     private String password;
+    private Role role;
 
     public User() {
     }
 
-    public User(String name, String surname, String email, String password) {
-        this.name = name;
-        this.surname = surname;
+    public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public User(int id, String name, String surname, int phoneNumber, String email, String password, Role role) {
+        super(id, name, surname, phoneNumber);
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public String getEmail() {
@@ -50,25 +43,36 @@ public class User extends Person implements Serializable {
         this.password = password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, email, password);
+        return Objects.hash(super.hashCode(), email, password, role);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "name='" + name + '\'' +
+                "email='" + email + '\'' +
+                ", role=" + role +
+                ", id=" + id +
+                ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
+                ", phoneNumber=" + phoneNumber +
                 '}';
     }
 }
